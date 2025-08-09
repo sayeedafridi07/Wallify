@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     paddingLeft: WP(5),
     paddingRight: WP(2),
     paddingVertical: HP(0.5),
-    marginTop: HP(2),
+    marginTop: HP(4),
     marginHorizontal: WP(5),
   },
   textInput: {

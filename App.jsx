@@ -14,8 +14,8 @@ const App = () => {
   };
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" />
         <NavigationContainer theme={MyTheme}>
           <RootNavigation />
         </NavigationContainer>

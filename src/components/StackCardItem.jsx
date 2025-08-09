@@ -20,8 +20,11 @@ import Icon from './Icon';
 import { data } from '../data/images';
 import { fontSize, HP, WP } from '../theme/scale';
 import { colors } from '../theme/colors';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenConstants } from '../utils/constant';
 
 const StackCardItem = ({ item, index, actualIndex, setActualIndex }) => {
+  const navigation = useNavigation();
   const [isFavorite, setIsFavorite] = useState(false);
   const position = useSharedValue({ x: 0, y: 0 });
   const lastOffset = useSharedValue({ x: 0, y: 0 });
@@ -145,7 +148,12 @@ const StackCardItem = ({ item, index, actualIndex, setActualIndex }) => {
             </View>
 
             {/* See More Button */}
-            <TouchableOpacity style={styles.seeMoreButton}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(ScreenConstants.WALLPAPER_LIST_SCREEN)
+              }
+              style={styles.seeMoreButton}
+            >
               <Text
                 style={[styles.seeMoreText, { flex: 1, textAlign: 'center' }]}
               >

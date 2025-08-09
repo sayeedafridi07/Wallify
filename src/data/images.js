@@ -190,15 +190,6 @@ export const data = [
   },
   {
     id: 22,
-    uri: 'https://images.unsplash.com/photo-1464822759844-d150baec4ba5?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0',
-    title: 'Snow Peaks',
-    country: 'Norway',
-    location: 'Oslo',
-    rating: '4.8',
-    reviews: '66',
-  },
-  {
-    id: 23,
     uri: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0',
     title: 'Island Paradise',
     country: 'Greece',

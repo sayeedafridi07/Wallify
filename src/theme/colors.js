@@ -12,4 +12,5 @@ export const colors = {
   light: '#f8f9fa',
   favourite: '#ff4757',
   transparent: 'rgba(255, 255, 255, 0.2)',
+  transparentBlack: 'rgba(0, 0, 0, 0.3)',
 };
