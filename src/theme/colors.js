@@ -12,4 +12,6 @@ export const colors = {
   favourite: '#ff4757',
   transparent: 'rgba(255, 255, 255, 0.2)',
   transparentBlack: 'rgba(0, 0, 0, 0.3)',
+  primary: '#d5b22a',
+  secondary: '#443d30',
 };

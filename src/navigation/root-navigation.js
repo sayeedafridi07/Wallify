@@ -4,6 +4,7 @@ import { ScreenConstants } from '../utils/constant';
 import WallpaperListScreen from '../screens/WallpaperListScreen';
 import WallpaperDetailScreen from '../screens/WallpaperDetailScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import QuizQuestionScreen from '../screens/QuizQuestionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,10 @@ const RootNavigation = () => {
       <Stack.Screen
         name={ScreenConstants.WALLPAPER_DETAIL_SCREEN}
         component={WallpaperDetailScreen}
+      />
+      <Stack.Screen
+        name={ScreenConstants.QUIZ_QUESTION_SCREEN}
+        component={QuizQuestionScreen}
       />
     </Stack.Navigator>
   );
