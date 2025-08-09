@@ -36,16 +36,17 @@ function TabNavigation() {
     >
       <Tab.Screen name={ScreenConstants.HOME_SCREEN} component={HomeScreen} />
       <Tab.Screen
+        name={ScreenConstants.FAVOURITE_SCREEN}
+        component={FavouriteScreen}
+      />
+      <Tab.Screen
         name={ScreenConstants.QUIZ_SCREEN}
         component={QuizScreen}
         options={{
           tabBarStyle: { display: 'none' },
         }}
       />
-      <Tab.Screen
-        name={ScreenConstants.FAVOURITE_SCREEN}
-        component={FavouriteScreen}
-      />
+
       <Tab.Screen
         name={ScreenConstants.SETTING_SCREEN}
         component={SettingScreen}
@@ -69,7 +70,7 @@ const menuIcons = (route, focused) => {
   if (route.name === ScreenConstants.HOME_SCREEN) {
     iconName = 'HomeIcon';
   } else if (route.name === ScreenConstants.QUIZ_SCREEN) {
-    iconName = 'InboxIcon';
+    iconName = 'BookOpenIcon';
   } else if (route.name === ScreenConstants.FAVOURITE_SCREEN) {
     iconName = 'HeartIcon';
   } else if (route.name === ScreenConstants.SETTING_SCREEN) {

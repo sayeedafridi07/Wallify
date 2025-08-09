@@ -32,12 +32,6 @@ const SettingScreen = ({ navigation }) => {
       section: 'settings',
       items: [
         {
-          id: 4,
-          title: 'Wallpaper Settings',
-          icon: 'MapPinIcon',
-          onPress: () => {},
-        },
-        {
           id: 5,
           title: 'Terms & Conditions',
           icon: 'PlayIcon',
@@ -91,7 +85,14 @@ const SettingScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <TopBar title="Settings" />
+      <TopBar
+        title="My Profile"
+        rightView={
+          <TouchableOpacity>
+            <Icon name="Cog8ToothIcon" color={colors.dark} />
+          </TouchableOpacity>
+        }
+      />
 
       <View style={styles.innerContainer}>
         {/* Profile Section */}
