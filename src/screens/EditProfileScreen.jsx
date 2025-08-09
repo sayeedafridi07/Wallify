@@ -5,6 +5,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Image,
+  ImageBackground,
 } from 'react-native';
 import TopBar from '../components/TopBar';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -69,92 +70,96 @@ export default function EditProfileScreen({ navigation }) {
   return (
     <KeyboardAwareScrollView
       style={{ flex: 1 }}
-      contentContainerStyle={{
-        flexGrow: 1,
-        backgroundColor: colors.background,
-      }}
       extraScrollHeight={20}
       enableOnAndroid={true}
       scrollEnabled={true}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
-      <TopBar title="Edit Profile" />
-      {/* Login Form */}
-      <View style={styles.container}>
-        <View style={styles.innerContainer}>
-          <Animated.View
-            entering={FadeInDown.delay(100).duration(700).springify()}
-            style={styles.imageContainer}
-          >
-            <TouchableOpacity
-              style={styles.imageWrapper}
-              onPress={handleImageEdit}
-              activeOpacity={0.8}
+      <ImageBackground
+        source={{
+          uri: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        }}
+        style={{ flex: 1 }}
+        resizeMode="cover"
+      >
+        <TopBar title="Edit Profile" />
+        {/* Login Form */}
+        <View style={styles.container}>
+          <View style={styles.innerContainer}>
+            <Animated.View
+              entering={FadeInDown.delay(100).duration(700).springify()}
+              style={styles.imageContainer}
             >
-              <Image
-                source={{ uri: formData.image }}
-                style={styles.userImage}
-              />
-              <View style={styles.editIconContainer}>
-                <Icon
-                  name="PencilIcon"
-                  size={fontSize(16)}
-                  color={colors.white}
+              <TouchableOpacity
+                style={styles.imageWrapper}
+                onPress={handleImageEdit}
+                activeOpacity={0.8}
+              >
+                <Image
+                  source={{ uri: formData.image }}
+                  style={styles.userImage}
                 />
-              </View>
-            </TouchableOpacity>
-          </Animated.View>
-          <Animated.View
-            entering={FadeInDown.delay(200).duration(700).springify()}
-          >
-            <CustomInputField
-              label="Name"
-              placeholder="Enter your name"
-              value={formData.name}
-              error={errors.name}
-              onChangeText={text => handleOnChange('name', text)}
-              isMandatory
-            />
-          </Animated.View>
-          <Animated.View
-            entering={FadeInDown.delay(300).duration(700).springify()}
-          >
-            <CustomInputField
-              label="Email"
-              placeholder="Enter your email"
-              value={formData.email}
-              error={errors.email}
-              onChangeText={text => handleOnChange('email', text)}
-              keyboardType="email-address"
-              isMandatory
-            />
-          </Animated.View>
-          <Animated.View
-            entering={FadeInDown.delay(500).duration(700).springify()}
-          >
-            <CustomInputField
-              label="Address"
-              placeholder="Enter your address"
-              value={formData.address}
-              error={errors.address}
-              onChangeText={text => handleOnChange('address', text)}
-              multiline
-            />
-          </Animated.View>
-          <Animated.View
-            entering={FadeInDown.delay(700).duration(700).springify()}
-          >
-            <ProgressOpacity
-              title="Submit"
-              loading={isSubmitting}
-              disabled={isSubmitting}
-              onPress={handleSubmit}
-              style={commonStyles.primaryBtnSmall}
-            />
-          </Animated.View>
+                <View style={styles.editIconContainer}>
+                  <Icon
+                    name="PencilIcon"
+                    size={fontSize(16)}
+                    color={colors.white}
+                  />
+                </View>
+              </TouchableOpacity>
+            </Animated.View>
+            <Animated.View
+              entering={FadeInDown.delay(200).duration(700).springify()}
+            >
+              <CustomInputField
+                label="Name"
+                placeholder="Enter your name"
+                value={formData.name}
+                error={errors.name}
+                onChangeText={text => handleOnChange('name', text)}
+                isMandatory
+              />
+            </Animated.View>
+            <Animated.View
+              entering={FadeInDown.delay(300).duration(700).springify()}
+            >
+              <CustomInputField
+                label="Email"
+                placeholder="Enter your email"
+                value={formData.email}
+                error={errors.email}
+                onChangeText={text => handleOnChange('email', text)}
+                keyboardType="email-address"
+                isMandatory
+              />
+            </Animated.View>
+            <Animated.View
+              entering={FadeInDown.delay(500).duration(700).springify()}
+            >
+              <CustomInputField
+                label="Address"
+                placeholder="Enter your address"
+                value={formData.address}
+                error={errors.address}
+                onChangeText={text => handleOnChange('address', text)}
+                multiline
+              />
+            </Animated.View>
+            <Animated.View
+              entering={FadeInDown.delay(700).duration(700).springify()}
+            >
+              <ProgressOpacity
+                title="Submit"
+                loading={isSubmitting}
+                disabled={isSubmitting}
+                onPress={handleSubmit}
+                style={commonStyles.primaryBtnSmall}
+              />
+            </Animated.View>
+          </View>
         </View>
-      </View>
+      </ImageBackground>
     </KeyboardAwareScrollView>
   );
 }
