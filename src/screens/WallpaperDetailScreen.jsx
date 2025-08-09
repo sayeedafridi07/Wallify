@@ -16,6 +16,7 @@ import { colors } from '../theme/colors';
 import { fontSize, HP, WP } from '../theme/scale';
 import TopBar from '../components/TopBar';
 import CustomBottomsheet from '../components/CustomBottomsheet';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const WallpaperDetailScreen = ({ route }) => {
   const { item } = route.params;
@@ -89,7 +90,10 @@ const WallpaperDetailScreen = ({ route }) => {
           </View>
         </ScrollView>
       </View>
-      <View style={styles.actionButtons}>
+      <Animated.View
+        entering={FadeInDown.delay(300).duration(700).springify()}
+        style={styles.actionButtons}
+      >
         <TouchableOpacity
           style={[styles.actionButton, styles.shareButton]}
           onPress={handleShare}
@@ -107,7 +111,7 @@ const WallpaperDetailScreen = ({ route }) => {
           <Icon name="PhotoIcon" size={20} color={colors.white} />
           <Text style={styles.actionButtonText}>Set as Wallpaper</Text>
         </TouchableOpacity>
-      </View>
+      </Animated.View>
       <CustomBottomsheet
         visible={bottomSheetVisible}
         onClose={() => setBottomSheetVisible(false)}

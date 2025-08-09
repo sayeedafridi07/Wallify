@@ -3,23 +3,31 @@ import { fontSize, HP, WP } from '../theme/scale';
 import { ChevronLeftIcon } from 'react-native-heroicons/outline';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../theme/colors';
+import Animated, { FadeInUp, RollInLeft } from 'react-native-reanimated';
 
 const TopBar = ({ title, rightView }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.header}>
-      <TouchableOpacity
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        onPress={() => navigation.goBack()}
-        style={styles.backBtn}
+      <Animated.View entering={RollInLeft.delay(100).duration(700).springify()}>
+        <TouchableOpacity
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          onPress={() => navigation.goBack()}
+          style={styles.backBtn}
+        >
+          <ChevronLeftIcon
+            color={colors.white}
+            size={fontSize(20)}
+            strokeWidth={2}
+          />
+        </TouchableOpacity>
+      </Animated.View>
+      <Animated.Text
+        entering={FadeInUp.delay(100).duration(700).springify()}
+        style={styles.titleTxt}
       >
-        <ChevronLeftIcon
-          color={colors.white}
-          size={fontSize(20)}
-          strokeWidth={2}
-        />
-      </TouchableOpacity>
-      <Text style={styles.titleTxt}>{title}</Text>
+        {title}
+      </Animated.Text>
       {rightView || <View style={styles.emptyView} />}
     </View>
   );

@@ -15,6 +15,7 @@ import { fontSize, HP, WP } from '../theme/scale';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenConstants } from '../utils/constant';
 import TopBar from '../components/TopBar';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const WallpaperListScreen = () => {
   const navigation = useNavigation();
@@ -30,39 +31,48 @@ const WallpaperListScreen = () => {
     setFavorites(newFavorites);
   };
 
-  const renderWallpaperItem = ({ item }) => {
+  const renderWallpaperItem = ({ item, index }) => {
     const isFavorite = favorites.has(item.id);
 
     return (
-      <TouchableOpacity
-        style={styles.itemContainer}
-        onPress={() =>
-          navigation.navigate(ScreenConstants.WALLPAPER_DETAIL_SCREEN, { item })
+      <Animated.View
+        entering={FadeInDown.delay(index * 100)
+          .duration(700)
+          .springify()
         }
       >
-        <ImageBackground source={{ uri: item.uri }} style={styles.imageStyle}>
-          <TouchableOpacity
-            style={styles.favoriteButton}
-            onPress={() => toggleFavorite(item.id)}
-          >
-            <Icon
-              name="HeartIcon"
-              size={20}
-              color={isFavorite ? colors.favourite : colors.white}
-              variant={isFavorite ? 'solid' : 'outline'}
-            />
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.itemContainer}
+          onPress={() =>
+            navigation.navigate(ScreenConstants.WALLPAPER_DETAIL_SCREEN, {
+              item,
+            })
+          }
+        >
+          <ImageBackground source={{ uri: item.uri }} style={styles.imageStyle}>
+            <TouchableOpacity
+              style={styles.favoriteButton}
+              onPress={() => toggleFavorite(item.id)}
+            >
+              <Icon
+                name="HeartIcon"
+                size={20}
+                color={isFavorite ? colors.favourite : colors.white}
+                variant={isFavorite ? 'solid' : 'outline'}
+              />
+            </TouchableOpacity>
 
-          <View style={styles.overlay}>
-            <Text style={styles.titleText} numberOfLines={1}>
-              {item.title}
-            </Text>
-            <Text style={styles.locationText} numberOfLines={1}>
-              {item.location}, {item.country}
-            </Text>
-          </View>
-        </ImageBackground>
-      </TouchableOpacity>
+            <View style={styles.overlay}>
+              <Text style={styles.titleText} numberOfLines={1}>
+                {item.title}
+              </Text>
+              <Text style={styles.locationText} numberOfLines={1}>
+                {item.location}, {item.country}
+              </Text>
+            </View>
+          </ImageBackground>
+        </TouchableOpacity>
+      </Animated.View>
     );
   };
 
