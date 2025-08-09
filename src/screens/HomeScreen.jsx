@@ -11,6 +11,7 @@ import SearchComponent from '../components/SearchComponent';
 import CategorySelector from '../components/CategorySelector';
 import { fontSize, HP, WP } from '../theme/scale';
 import { colors } from '../theme/colors';
+import StackCard from '../components/StackCard';
 
 const HomeScreen = () => {
   // Mock data for categories
@@ -43,13 +44,13 @@ const HomeScreen = () => {
       <SearchComponent />
 
       {/* Category Selector Component */}
-      <CategorySelector
+      {/* <CategorySelector
         categories={categories}
         selectedCategory={activeCategory}
         onSelectCategory={setActiveCategory}
-      />
+      /> */}
 
-      {/* You can add more content below, like a list of trips */}
+      <StackCard />
     </View>
   );
 };
