@@ -4,24 +4,29 @@ import {
   StyleSheet,
   ScrollView,
   ImageBackground,
-  TouchableOpacity,
-  Alert,
   Share,
   Image,
+  NativeModules,
+  TouchableOpacity,
 } from 'react-native';
 import React, { useState } from 'react';
-import { useRoute, useNavigation } from '@react-navigation/native';
 import Icon from '../components/Icon';
 import { colors } from '../theme/colors';
 import { fontSize, HP, WP } from '../theme/scale';
 import TopBar from '../components/TopBar';
 import CustomBottomsheet from '../components/CustomBottomsheet';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import SnackbarUtils from '../utils/SnackbarUtils';
+import ProgressOpacity from './ProgressOpacity';
+import { commonStyles } from '../utils/commonStyles';
+
+const { WallpaperManager } = NativeModules;
 
 const WallpaperDetailScreen = ({ route }) => {
   const { item } = route.params;
   const [isFavorite, setIsFavorite] = useState(false);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const [isSettingWallpaper, setIsSettingWallpaper] = useState(false);
 
   const handleShare = async () => {
     try {
@@ -30,7 +35,7 @@ const WallpaperDetailScreen = ({ route }) => {
         url: item.uri,
       });
     } catch (error) {
-      Alert.alert('Error', 'Failed to share wallpaper');
+      SnackbarUtils.showError('Failed to share wallpaper');
     }
   };
 
@@ -38,12 +43,41 @@ const WallpaperDetailScreen = ({ route }) => {
     setBottomSheetVisible(true);
   };
 
-  const handleWallpaperOption = option => {
+  const handleWallpaperOption = async option => {
     setBottomSheetVisible(false);
-    Alert.alert(
-      'Set Wallpaper',
-      `You chose to set wallpaper as: ${option}\n\nPlease take a screenshot or save the image, then set it via your device settings.`,
-    );
+    setIsSettingWallpaper(true);
+
+    let wallpaperType;
+    switch (option) {
+      case 'Home Screen':
+        wallpaperType = 'home';
+        break;
+      case 'Lock Screen':
+        wallpaperType = 'lock';
+        break;
+      case 'Both':
+        wallpaperType = 'both';
+        break;
+      default:
+        wallpaperType = 'home';
+    }
+
+    try {
+      const result = await WallpaperManager.setWallpaper(
+        item.uri,
+        wallpaperType,
+      );
+      setIsSettingWallpaper(false);
+
+      if (result.status === 'success') {
+        SnackbarUtils.showInfo(result.message);
+      } else {
+        SnackbarUtils.showError(result.message);
+      }
+    } catch (error) {
+      setIsSettingWallpaper(false);
+      SnackbarUtils.showError('Failed to set wallpaper: ' + error.message);
+    }
   };
 
   return (
@@ -94,23 +128,18 @@ const WallpaperDetailScreen = ({ route }) => {
         entering={FadeInDown.delay(300).duration(700).springify()}
         style={styles.actionButtons}
       >
-        <TouchableOpacity
-          style={[styles.actionButton, styles.shareButton]}
+        {/* Use ProgressOpacity for Share button */}
+        <ProgressOpacity
+          style={[commonStyles.secondaryBtn, { flex: 1 }]}
+          txtStyle={{ color: colors.dark }}
           onPress={handleShare}
-        >
-          <Icon name="ShareIcon" size={fontSize(20)} color={colors.dark} />
-          <Text style={[styles.actionButtonText, { color: colors.dark }]}>
-            Share
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.actionButton, styles.setWallpaperButton]}
+          title="Share"
+        />
+        <ProgressOpacity
+          style={[commonStyles.primaryBtn, { flex: 4 }]}
           onPress={handleSetAsWallpaper}
-        >
-          <Icon name="PhotoIcon" size={20} color={colors.white} />
-          <Text style={styles.actionButtonText}>Set as Wallpaper</Text>
-        </TouchableOpacity>
+          title="Apply"
+        />
       </Animated.View>
       <CustomBottomsheet
         visible={bottomSheetVisible}
@@ -118,24 +147,22 @@ const WallpaperDetailScreen = ({ route }) => {
         title="Set Wallpaper"
       >
         <View style={styles.sheetOptions}>
-          <TouchableOpacity
-            style={styles.sheetButton}
+          <ProgressOpacity
+            style={commonStyles.primaryBtn}
             onPress={() => handleWallpaperOption('Home Screen')}
-          >
-            <Text style={styles.sheetButtonText}>Set as Home Screen</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.sheetButton}
+            title="Set as Home Screen"
+          />
+          <ProgressOpacity
+            style={commonStyles.primaryBtn}
             onPress={() => handleWallpaperOption('Lock Screen')}
-          >
-            <Text style={styles.sheetButtonText}>Set as Lock Screen</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.sheetButton}
+            title="Set as Lock Screen"
+          />
+          <ProgressOpacity
+            style={commonStyles.primaryBtn}
             onPress={() => handleWallpaperOption('Both')}
-          >
-            <Text style={styles.sheetButtonText}>Set Both</Text>
-          </TouchableOpacity>
+            title="Set Both"
+            txtStyle={styles.sheetButtonText}
+          />
         </View>
       </CustomBottomsheet>
     </View>
@@ -160,7 +187,6 @@ const styles = StyleSheet.create({
     height: HP(60),
     borderRadius: WP(4),
   },
-
   content: {
     paddingHorizontal: WP(5),
     paddingBottom: HP(3),
@@ -203,41 +229,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: WP(3),
     marginHorizontal: WP(5),
-  },
-  actionButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: HP(1.5),
-    borderRadius: WP(3),
-    gap: WP(2),
     marginBottom: HP(2),
   },
-  shareButton: {
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.dark,
-  },
-  setWallpaperButton: {
-    backgroundColor: colors.dark,
-  },
-  actionButtonText: {
-    fontSize: fontSize(14),
-    fontWeight: '600',
-    color: colors.white,
-  },
-
-  sheetButton: {
-    backgroundColor: colors.dark,
-    borderRadius: WP(2),
-    paddingVertical: HP(1.5),
-    marginBottom: HP(2),
-    alignItems: 'center',
-  },
-  sheetButtonText: {
-    color: colors.white,
-    fontSize: fontSize(16),
-    fontWeight: '600',
+  sheetOptions: {
+    gap: HP(2),
   },
 });

@@ -12,6 +12,7 @@ import CategorySelector from '../components/CategorySelector';
 import { fontSize, HP, WP } from '../theme/scale';
 import { colors } from '../theme/colors';
 import StackCard from '../components/StackCard';
+import user from '../data/user';
 
 const HomeScreen = () => {
   // Mock data for categories
@@ -31,11 +32,11 @@ const HomeScreen = () => {
       {/* Header Section */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Hello, Afridi</Text>
+          <Text style={styles.greeting}>Hello, {user.name}</Text>
           <Text style={styles.welcome}>Welcome to Wallify</Text>
         </View>
         <Image
-          source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
+          source={{ uri: user.image }}
           style={styles.profilePic}
         />
       </View>

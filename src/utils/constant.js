@@ -5,4 +5,5 @@ export const ScreenConstants = {
   SETTING_SCREEN: 'SettingScreen',
   WALLPAPER_LIST_SCREEN: 'WallpaperListScreen',
   WALLPAPER_DETAIL_SCREEN: 'WallpaperDetailScreen',
+  EDIT_PROFILE_SCREEN: 'EditProfileScreen',
 };
