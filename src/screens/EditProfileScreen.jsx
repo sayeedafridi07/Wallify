@@ -69,7 +69,7 @@ export default function EditProfileScreen({ navigation }) {
 
   return (
     <KeyboardAwareScrollView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: colors.white }}
       extraScrollHeight={20}
       enableOnAndroid={true}
       scrollEnabled={true}

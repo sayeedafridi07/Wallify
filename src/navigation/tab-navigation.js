@@ -8,6 +8,7 @@ import QuizScreen from '../screens/QuizScreen';
 import FavouriteScreen from '../screens/FavouriteScreen';
 import SettingScreen from '../screens/SettingScreen';
 import { fontSize, HP, WP } from '../theme/scale';
+import { InboxStackIcon } from 'react-native-heroicons/outline';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +35,13 @@ function TabNavigation() {
       })}
     >
       <Tab.Screen name={ScreenConstants.HOME_SCREEN} component={HomeScreen} />
-      <Tab.Screen name={ScreenConstants.QUIZ_SCREEN} component={QuizScreen} />
+      <Tab.Screen
+        name={ScreenConstants.QUIZ_SCREEN}
+        component={QuizScreen}
+        options={{
+          tabBarStyle: { display: 'none' },
+        }}
+      />
       <Tab.Screen
         name={ScreenConstants.FAVOURITE_SCREEN}
         component={FavouriteScreen}
@@ -62,7 +69,7 @@ const menuIcons = (route, focused) => {
   if (route.name === ScreenConstants.HOME_SCREEN) {
     iconName = 'HomeIcon';
   } else if (route.name === ScreenConstants.QUIZ_SCREEN) {
-    iconName = 'BellIcon';
+    iconName = 'InboxIcon';
   } else if (route.name === ScreenConstants.FAVOURITE_SCREEN) {
     iconName = 'HeartIcon';
   } else if (route.name === ScreenConstants.SETTING_SCREEN) {
@@ -71,10 +78,7 @@ const menuIcons = (route, focused) => {
 
   return (
     <View
-      style={[
-        styles.iconContainer,
-        focused && styles.focusedIconContainer
-      ]}
+      style={[styles.iconContainer, focused && styles.focusedIconContainer]}
     >
       {iconName ? <Icon name={iconName} {...iconProps} /> : null}
     </View>
