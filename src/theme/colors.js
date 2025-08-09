@@ -10,4 +10,6 @@ export const colors = {
   placeholder: '#a1a1a1',
   white: '#ffffff',
   light: '#f8f9fa',
+  favourite: '#ff4757',
+  transparent: 'rgba(255, 255, 255, 0.2)',
 };

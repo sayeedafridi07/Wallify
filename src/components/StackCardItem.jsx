@@ -1,4 +1,10 @@
-import { View, Text, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Animated, {
   Extrapolate,
@@ -12,7 +18,8 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Icon from './Icon';
 import { data } from '../data/images';
-import { HP, WP } from '../theme/scale';
+import { fontSize, HP, WP } from '../theme/scale';
+import { colors } from '../theme/colors';
 
 const StackCardItem = ({ item, index, actualIndex, setActualIndex }) => {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -102,15 +109,15 @@ const StackCardItem = ({ item, index, actualIndex, setActualIndex }) => {
       >
         <ImageBackground source={{ uri: item.uri }} style={styles.imagesStyle}>
           {/* Favorite Button */}
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.favoriteButton}
             onPress={() => setIsFavorite(!isFavorite)}
           >
-            <Icon 
-              name={isFavorite ? "HeartIcon" : "HeartIcon"} 
-              size={24} 
-              color={isFavorite ? "#ff4757" : "white"}
-              variant={isFavorite ? "solid" : "outline"}
+            <Icon
+              name={isFavorite ? 'HeartIcon' : 'HeartIcon'}
+              size={24}
+              color={isFavorite ? colors.favourite : colors.white}
+              variant={isFavorite ? 'solid' : 'outline'}
             />
           </TouchableOpacity>
 
@@ -119,21 +126,38 @@ const StackCardItem = ({ item, index, actualIndex, setActualIndex }) => {
             <View style={styles.countryContainer}>
               <Text style={styles.countryText}>{item.country}</Text>
             </View>
-            
+
             {/* Location and Rating */}
             <View style={styles.locationContainer}>
               <Text style={styles.locationText}>{item.location}</Text>
               <View style={styles.ratingContainer}>
-                <Icon name="StarIcon" size={16} color="#ffd700" variant="solid" />
-                <Text style={styles.ratingText}>{item.rating}</Text>
+                <View style={styles.ratingInnerContainer}>
+                  <Icon
+                    name="StarIcon"
+                    size={fontSize(16)}
+                    color={colors.white}
+                    variant="outline"
+                  />
+                  <Text style={styles.ratingText}>{item.rating}</Text>
+                </View>
                 <Text style={styles.reviewsText}>{item.reviews} reviews</Text>
               </View>
             </View>
 
             {/* See More Button */}
             <TouchableOpacity style={styles.seeMoreButton}>
-              <Text style={styles.seeMoreText}>See more</Text>
-              <Icon name="ChevronRightIcon" size={20} color="white" />
+              <Text
+                style={[styles.seeMoreText, { flex: 1, textAlign: 'center' }]}
+              >
+                See more
+              </Text>
+              <View style={styles.seeMoreIconContainer}>
+                <Icon
+                  name="ChevronRightIcon"
+                  size={fontSize(20)}
+                  color={colors.dark}
+                />
+              </View>
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -153,74 +177,94 @@ const styles = StyleSheet.create({
   imageView: {
     flex: 1,
     justifyContent: 'flex-end',
-    padding: 16,
+    padding: WP(4),
   },
   imagesStyle: {
     width: '100%',
     height: '100%',
     overflow: 'hidden',
-    borderRadius: 12,
+    borderRadius: WP(4),
     objectFit: 'contain',
   },
   favoriteButton: {
     position: 'absolute',
-    top: 16,
-    right: 16,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    top: WP(4),
+    right: WP(4),
+    width: WP(10),
+    height: WP(10),
+    borderRadius: WP(5),
+    backgroundColor: colors.transparent,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,
   },
   countryContainer: {
     alignSelf: 'flex-start',
-    marginBottom: 8,
+    marginBottom: HP(1),
   },
   countryText: {
-    color: 'white',
-    fontSize: 14,
+    color: colors.white,
+    fontSize: fontSize(14),
     fontWeight: '500',
     opacity: 0.9,
   },
   locationContainer: {
-    marginBottom: 12,
+    marginBottom: HP(1.5),
   },
   locationText: {
-    color: 'white',
-    fontSize: 24,
+    color: colors.white,
+    fontSize: fontSize(24),
     fontWeight: '700',
-    marginBottom: 4,
+    marginBottom: HP(1),
   },
   ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: WP(2),
+    opacity: 0.8,
+  },
+  ratingInnerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: WP(1),
+    borderWidth: 1,
+    borderColor: colors.white,
+    borderRadius: 999,
+    paddingHorizontal: WP(2),
+    paddingVertical: WP(0.5),
   },
   ratingText: {
-    color: 'white',
-    fontSize: 16,
+    color: colors.white,
+    fontSize: fontSize(16),
     fontWeight: '600',
   },
   reviewsText: {
-    color: 'white',
-    fontSize: 14,
-    opacity: 0.8,
+    color: colors.white,
+    fontSize: fontSize(14),
   },
   seeMoreButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 25,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    backgroundColor: colors.transparent,
+    borderRadius: 999,
+    paddingVertical: WP(3),
+    paddingHorizontal: WP(5),
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    alignSelf: 'stretch',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  seeMoreIconContainer: {
+    position: 'absolute',
+    right: 4,
+    backgroundColor: colors.white,
+    borderRadius: 999,
+    width: WP(10),
+    height: WP(10),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   seeMoreText: {
-    color: 'white',
-    fontSize: 16,
+    color: colors.white,
+    fontSize: fontSize(16),
     fontWeight: '600',
   },
 });
