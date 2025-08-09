@@ -22,7 +22,7 @@ function TabNavigation() {
         tabBarStyle: {
           position: 'absolute',
           borderTopWidth: 0,
-          marginBottom: HP(2),
+          marginBottom: HP(4),
           marginHorizontal: WP(15),
           borderRadius: HP(4),
           backgroundColor: colors.dark,

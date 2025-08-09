@@ -15,11 +15,12 @@ import Icon from '../components/Icon';
 import { colors } from '../theme/colors';
 import { fontSize, HP, WP } from '../theme/scale';
 import TopBar from '../components/TopBar';
+import CustomBottomsheet from '../components/CustomBottomsheet';
 
-const WallpaperDetailScreen = () => {
-  const route = useRoute();
+const WallpaperDetailScreen = ({ route }) => {
   const { item } = route.params;
   const [isFavorite, setIsFavorite] = useState(false);
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 
   const handleShare = async () => {
     try {
@@ -33,13 +34,14 @@ const WallpaperDetailScreen = () => {
   };
 
   const handleSetAsWallpaper = () => {
+    setBottomSheetVisible(true);
+  };
+
+  const handleWallpaperOption = option => {
+    setBottomSheetVisible(false);
     Alert.alert(
-      'Set as Wallpaper',
-      'To set this as your wallpaper:\n\n1. Take a screenshot or save the image\n2. Go to your device Settings\n3. Navigate to Wallpaper/Display settings\n4. Select the saved image\n\nWould you like to share this wallpaper to save it?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Share to Save', onPress: handleShare },
-      ],
+      'Set Wallpaper',
+      `You chose to set wallpaper as: ${option}\n\nPlease take a screenshot or save the image, then set it via your device settings.`,
     );
   };
 
@@ -106,6 +108,32 @@ const WallpaperDetailScreen = () => {
           <Text style={styles.actionButtonText}>Set as Wallpaper</Text>
         </TouchableOpacity>
       </View>
+      <CustomBottomsheet
+        visible={bottomSheetVisible}
+        onClose={() => setBottomSheetVisible(false)}
+        title="Set Wallpaper"
+      >
+        <View style={styles.sheetOptions}>
+          <TouchableOpacity
+            style={styles.sheetButton}
+            onPress={() => handleWallpaperOption('Home Screen')}
+          >
+            <Text style={styles.sheetButtonText}>Set as Home Screen</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.sheetButton}
+            onPress={() => handleWallpaperOption('Lock Screen')}
+          >
+            <Text style={styles.sheetButtonText}>Set as Lock Screen</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.sheetButton}
+            onPress={() => handleWallpaperOption('Both')}
+          >
+            <Text style={styles.sheetButtonText}>Set Both</Text>
+          </TouchableOpacity>
+        </View>
+      </CustomBottomsheet>
     </View>
   );
 };
@@ -180,6 +208,7 @@ const styles = StyleSheet.create({
     paddingVertical: HP(1.5),
     borderRadius: WP(3),
     gap: WP(2),
+    marginBottom: HP(2),
   },
   shareButton: {
     backgroundColor: colors.white,
@@ -193,5 +222,18 @@ const styles = StyleSheet.create({
     fontSize: fontSize(14),
     fontWeight: '600',
     color: colors.white,
+  },
+
+  sheetButton: {
+    backgroundColor: colors.dark,
+    borderRadius: WP(2),
+    paddingVertical: HP(1.5),
+    marginBottom: HP(2),
+    alignItems: 'center',
+  },
+  sheetButtonText: {
+    color: colors.white,
+    fontSize: fontSize(16),
+    fontWeight: '600',
   },
 });
