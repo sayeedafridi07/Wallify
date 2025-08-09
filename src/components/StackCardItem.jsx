@@ -1,5 +1,5 @@
-import { View, Text, ImageBackground, StyleSheet } from 'react-native';
-import React, { useEffect } from 'react';
+import { View, Text, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -10,9 +10,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Icon from './Icon';
 import { data } from '../data/images';
+import { HP, WP } from '../theme/scale';
 
 const StackCardItem = ({ item, index, actualIndex, setActualIndex }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
   const position = useSharedValue({ x: 0, y: 0 });
   const lastOffset = useSharedValue({ x: 0, y: 0 });
   const value = useSharedValue(data.length);
@@ -88,8 +91,7 @@ const StackCardItem = ({ item, index, actualIndex, setActualIndex }) => {
 
   useEffect(() => {
     value.value = withSpring(actualIndex, {
-      //   damping: 10,
-      //   stiffness: 100,
+      stiffness: 100,
     });
   }, [actualIndex]);
 
@@ -99,10 +101,40 @@ const StackCardItem = ({ item, index, actualIndex, setActualIndex }) => {
         style={[{ zIndex: actualIndex + 1 }, styles.container, rnStyle]}
       >
         <ImageBackground source={{ uri: item.uri }} style={styles.imagesStyle}>
+          {/* Favorite Button */}
+          <TouchableOpacity 
+            style={styles.favoriteButton}
+            onPress={() => setIsFavorite(!isFavorite)}
+          >
+            <Icon 
+              name={isFavorite ? "HeartIcon" : "HeartIcon"} 
+              size={24} 
+              color={isFavorite ? "#ff4757" : "white"}
+              variant={isFavorite ? "solid" : "outline"}
+            />
+          </TouchableOpacity>
+
           <View style={styles.imageView}>
-            <View style={styles.imageTextView}>
-              <Text style={styles.imageText}>{item.title}</Text>
+            {/* Country Label */}
+            <View style={styles.countryContainer}>
+              <Text style={styles.countryText}>{item.country}</Text>
             </View>
+            
+            {/* Location and Rating */}
+            <View style={styles.locationContainer}>
+              <Text style={styles.locationText}>{item.location}</Text>
+              <View style={styles.ratingContainer}>
+                <Icon name="StarIcon" size={16} color="#ffd700" variant="solid" />
+                <Text style={styles.ratingText}>{item.rating}</Text>
+                <Text style={styles.reviewsText}>{item.reviews} reviews</Text>
+              </View>
+            </View>
+
+            {/* See More Button */}
+            <TouchableOpacity style={styles.seeMoreButton}>
+              <Text style={styles.seeMoreText}>See more</Text>
+              <Icon name="ChevronRightIcon" size={20} color="white" />
+            </TouchableOpacity>
           </View>
         </ImageBackground>
       </Animated.View>
@@ -115,21 +147,13 @@ export default StackCardItem;
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    width: 250,
-    height: 350,
+    width: WP(70),
+    height: HP(45),
   },
   imageView: {
     flex: 1,
     justifyContent: 'flex-end',
-  },
-  imageTextView: {
-    paddingHorizontal: 12,
-    paddingVertical: 16,
-  },
-  imageText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: '700',
+    padding: 16,
   },
   imagesStyle: {
     width: '100%',
@@ -137,5 +161,66 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 12,
     objectFit: 'contain',
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  countryContainer: {
+    alignSelf: 'flex-start',
+    marginBottom: 8,
+  },
+  countryText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '500',
+    opacity: 0.9,
+  },
+  locationContainer: {
+    marginBottom: 12,
+  },
+  locationText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  ratingText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  reviewsText: {
+    color: 'white',
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  seeMoreButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    alignSelf: 'stretch',
+  },
+  seeMoreText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

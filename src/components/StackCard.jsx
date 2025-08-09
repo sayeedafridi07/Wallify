@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import StackCardItem from './StackCardItem';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { data } from '../data/images';
+import { HP } from '../theme/scale';
 
 const StackCard = () => {
   const [actualIndex, setActualIndex] = useState(data.length - 1);
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    marginTop: HP(8),
   },
 });
